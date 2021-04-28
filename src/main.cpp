@@ -1,4 +1,6 @@
-#include "Bleep.h"
+#include "main.h"
+
+void HTTPsetup();
 
 void setup(void) {
     /* Start serial communication at 115200 bauds */
