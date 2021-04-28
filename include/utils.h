@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Arduino.h>
 #include <WString.h>
 
 namespace utils {
@@ -8,7 +7,7 @@ namespace utils {
 
   class Beep {
     public:
-      Beep(short pin, unsigned short hz, unsigned short duration): buzzerPin(pin), beepTone(hz), beepDuration(duration), startTime(0) {}
+      Beep(short pin, unsigned short hz, unsigned short duration): beepTone(hz), beepDuration(duration), buzzerPin(pin), startTime(0) {}
 
       void start();
       void stop();

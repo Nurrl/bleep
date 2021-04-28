@@ -1,13 +1,12 @@
 SKETCH				:= src/main.cpp
-LIBS				:= src/utils.cpp
+LIBS				:= include/ $(wildcard src/*.cpp)
 
-BUILD_DIR			:= build
+BUILD_DIR			:= build/
 
 CHIP				:= esp8266
 BOARD				:= nodemcuv2
 
-# BUILD_EXTRA_FLAGS	:= -Iinclude
-
+COMP_WARNINGS		:= -Wall -Werror
 VERBOSE				:= 1
 
 # Include the `makeEspArduino` Makefile

@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#include <Arduino.h>
+
 /** Generate an HTML response for a Markdown string */
 String utils::markdown(String mk) {
   return (
