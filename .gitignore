@@ -33,3 +33,6 @@
 
 # The build/ directory
 build/
+
+# Exclude the .vscode directory since it contains computer-specific links
+.vscode/

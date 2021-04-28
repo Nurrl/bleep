@@ -1,11 +1,6 @@
 #pragma once
 
 /**
- * Bleep usage configuration.
- */
-#define BEEP_QUEUE 128
-
-/**
  * Set here your Wi-Fi SSID and password for the Bleep IoT device
  * to connect to your network.
  */

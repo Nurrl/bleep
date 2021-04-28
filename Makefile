@@ -2,6 +2,7 @@ SKETCH				:= src/main.cpp
 LIBS				:= include/ $(wildcard src/*.cpp)
 
 BUILD_DIR			:= build/
+FS_DIR				:= data/
 
 CHIP				:= esp8266
 BOARD				:= nodemcuv2

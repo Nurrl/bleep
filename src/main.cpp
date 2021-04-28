@@ -1,14 +1,15 @@
 #include "main.h"
 
-void HTTPsetup();
+#include <ESP8266WiFi.h>
+#include <uri/UriRegex.h>
 
 void setup(void) {
     /* Start serial communication at 115200 bauds */
   Serial.begin(115200);
   Serial.println("");
-  
+
   Serial.println("<#> Starting the Bleep v" + String(VERSION) + " Internet of Shit server !");
-  
+
   /* Set leds and buzzer to output mode and set them to low */
   pinMode(led0, OUTPUT);
   pinMode(led1, OUTPUT);
@@ -17,10 +18,10 @@ void setup(void) {
   digitalWrite(led0, LOW);
   digitalWrite(led1, LOW);
   digitalWrite(buzzer, LOW);
-  
+
   /* Connect to the WiFi hotspot specified in the configuration */
   WiFi.begin(ssid, passwd);
-  
+
   Serial.print("<#> Waiting for Wi-Fi connection..");
 
   /* Loop over the Wi-Fi connection check */
@@ -28,7 +29,7 @@ void setup(void) {
     Serial.print(".");
     delay(200);
   }
-  
+
   Serial.print(" Connected as ");
   Serial.println(WiFi.localIP());
 
@@ -60,7 +61,7 @@ void HTTPsetup() {
         "*Emit a beep or enqueue a new one (up to " + String(BEEP_QUEUE) + ") if one is currently playing.*\n"
         "\n"
         "##### Parameters:\n"
-        "- `tone`: `int{0,9999}` — the desired tone, exprimed in **Hz**.\n" 
+        "- `tone`: `int{0,9999}` — the desired tone, exprimed in **Hz**.\n"
         "- `duration`: `int{0,9999}` — the desired duration, exprimed in **ms**.\n"
         "\n"
         "##### Examples:\n"
@@ -82,7 +83,7 @@ void HTTPsetup() {
       server.send(425, "text/plain", "Unfortnately the queue of beeps is full, try again later !");
       return;
     }
-    
+
     /* Extract values from the path parameters */
     int hz = server.pathArg(0).toInt();
     int duration = server.pathArg(1).toInt();
@@ -96,10 +97,10 @@ void HTTPsetup() {
     /* Return `204 No Content` to the client */
     server.send(204);
   });
-  
+
   server.onNotFound([]() {
     server.sendHeader("Server", SERVER, true); /* Set `Server` header */
-    server.send(404, "text/plain", "Are you lost !?");  
+    server.send(404, "text/plain", "Are you lost !?");
   });
 
   /* Finally start the server */
@@ -124,8 +125,7 @@ void loop(void) {
   if (beep && beep->shouldStop()) {
     beeps.remove(0);
     beep->stop();
- 
+
     delete beep;
   }
-
 }
