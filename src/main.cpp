@@ -61,8 +61,8 @@ void HTTPsetup() {
         "*Emit a beep or enqueue a new one (up to " + String(BEEP_QUEUE) + ") if one is currently playing.*\n"
         "\n"
         "##### Parameters:\n"
-        "- `tone`: `int{0,9999}` — the desired tone, exprimed in **Hz**.\n"
-        "- `duration`: `int{0,9999}` — the desired duration, exprimed in **ms**.\n"
+        "- `tone`: `int{20,12000}` — the desired tone, exprimed in **Hz**.\n"
+        "- `duration`: `int{10,4000}` — the desired duration, exprimed in **ms**.\n"
         "\n"
         "##### Examples:\n"
         "- [200Hz, 1sec](/bleep/200:1000) — `200:1000`\n"
@@ -77,16 +77,16 @@ void HTTPsetup() {
   server.on(UriRegex("^\\/bleep\\/([0-9]{1,4}):([0-9]{1,4})$"), HTTP_GET, []() {
     server.sendHeader("Server", SERVER, true); /* Set `Server` header */
 
-    /* Check if a new beep can be pushed to the Array */
-    if (beeps.size() >= BEEP_QUEUE) {
-      /* Return `425 Too Early` if the queue is full */
-      server.send(425, "text/plain", "Unfortnately the queue of beeps is full, try again later !");
-      return;
-    }
-
     /* Extract values from the path parameters */
     int hz = server.pathArg(0).toInt();
     int duration = server.pathArg(1).toInt();
+
+    /* Check if a new beep can be pushed to the Array */
+    if (beeps.size() >= BEEP_QUEUE) {
+      /* Return `425 Too Early` if the queue is full */
+      server.send(425, "text/plain", "Unfortunately the queue of beeps is full, try again later !");
+      return;
+    }
 
     /* Store the beep to the list */
     beeps.add(new Beep(buzzer, hz, duration));

@@ -7,3 +7,4 @@ Firmware for an Internet of Shit device that does *Beeps* when endpoints are req
 - [ ] Implement a start/stop mechanism to be able to create melodies.
 - [ ] Make the [**GET** `/bleep/{tone}:{duration}`] *examples* section a piano keyboard.
 - [ ] Use the SPIFFS to store the [**GET** `/`] markdown.
+- [ ] Enhance the **README.md** file.
