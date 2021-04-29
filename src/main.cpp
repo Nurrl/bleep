@@ -33,9 +33,7 @@ void setup(void) {
 }
 
 void HTTPsetup() {
-  /** [GET /]
-   * Root page, displaying introduction and route specs for the API.
-   */
+  /** [GET /] */
   server.on("/", HTTP_GET, []() {
     server.sendHeader("Server", SERVER, true); /* Set `Server` header */
 
@@ -49,7 +47,17 @@ void HTTPsetup() {
         "### **GET** `/`\n"
         "*Get this **wonderful** explanatory page.*\n"
         "\n"
-        "### **GET** `/bleep/{tone}:{duration}`\n"
+        "### **GET** `/playing/{status}`\n"
+        "*Start or stop the dequeuing of notes depending on the provided `status`.*\n"
+        "\n"
+        "##### Parameters:\n"
+        "- `status`: `bool` — wether the song should be played or not.\n"
+        "\n"
+        "##### Examples:\n"
+        "- [on](/playing/1) — `/playing/1`\n"
+        "- [off](/playing/0) — `/playing/0`\n"
+        "\n"
+        "### **GET** `/beep/{tone}:{duration}`\n"
         "*Emit a beep or enqueue a new one (up to " + String(BEEP_QUEUE) + ") if one is currently playing.*\n"
         "\n"
         "##### Parameters:\n"
@@ -57,16 +65,30 @@ void HTTPsetup() {
         "- `duration`: `int{50,4000}` — the desired duration, exprimed in **ms**.\n"
         "\n"
         "##### Piano keyboard:\n"
-        "&nbsp; |[█](/bleep/277:500)|[█](/bleep/311:500)|||[█](/bleep/370:500)|[█](/bleep/415:500)|[█](/bleep/466:500)|  \n"
-        "|[C](/bleep/262:500)|[D](/bleep/294:500)|[E](/bleep/330:500)|[F](/bleep/349:500)|[G](/bleep/392:500)|[A](/bleep/440:500)|[B](/bleep/494:500)|\n"
+        "&nbsp; |[█](/beep/277:500)|[█](/beep/311:500)|_|[█](/beep/370:500)|[█](/beep/415:500)|[█](/beep/466:500)|  \n"
+        "|[C](/beep/262:500)|[D](/beep/294:500)|[E](/beep/330:500)|[F](/beep/349:500)|[G](/beep/392:500)|[A](/beep/440:500)|[B](/beep/494:500)|\n"
       )
     );
   });
 
-  /** [GET /bleep/{tone}:{duration}]
-   * Produce a beep with the provided buzzer with the frequency of `tone` Hz during `duration` ms.
-   */
-  server.on(UriRegex("^\\/bleep\\/([0-9]+):([0-9]+)$"), HTTP_GET, []() {
+  /** [GET /playing/{status}] */
+  server.on(UriRegex("^\\/playing\\/([0-1])$"), HTTP_GET, []() {
+    server.sendHeader("Server", SERVER, true); /* Set `Server` header */
+
+    /* Extract values from the path parameters */
+    bool status = server.pathArg(0).toInt();
+
+    /* Set playing status */
+    playing = status;
+
+    Serial.println("<i> Set the playing status to `" + String(playing) + "`.");
+
+    /* Return `204 No Content` to the client */
+    server.send(204);
+  });
+
+  /** [GET /beep/{tone}:{duration}] */
+  server.on(UriRegex("^\\/beep\\/([0-9]+):([0-9]+)$"), HTTP_GET, []() {
     server.sendHeader("Server", SERVER, true); /* Set `Server` header */
 
     /* Extract values from the path parameters */
@@ -95,7 +117,7 @@ void HTTPsetup() {
     /* Store the beep to the list */
     beeps.add(new Beep(buzzer, hz, duration));
 
-    Serial.println("<i> Successfully enqueued a new beep (" + String(hz) + "Hz, " + String(duration) + "ms), "
+    Serial.println("<i> Enqueued a new beep (" + String(hz) + "Hz, " + String(duration) + "ms), "
       "queue is at " + String(beeps.size()) + "/" + String(BEEP_QUEUE) + ".");
 
     /* Return `204 No Content` to the client */
@@ -117,8 +139,9 @@ void HTTPsetup() {
 void loop(void) {
   /* Get the current beep and starts it if required */
   Beep* beep = beeps.get(0);
-  if (beep && !beep->started()) {
+  if (playing && beep && !beep->started()) {
     beep->start();
+
     Serial.println("<!> Beeping at " + String(beep->beepTone) + "Hz for " + String(beep->beepDuration) + "ms.");
   }
 
@@ -126,7 +149,7 @@ void loop(void) {
   server.handleClient();
 
   /* Check if a timer expired to stop the beep */
-  if (beep && beep->shouldStop()) {
+  if (beep && beep->started() && beep->shouldStop()) {
     beeps.remove(0);
     beep->stop();
 

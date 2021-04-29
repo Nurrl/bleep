@@ -26,7 +26,9 @@ using utils::Beep;
 #endif
 
 ESP8266WebServer server(80);
+
 LinkedList<Beep*> beeps;
+bool playing = true;
 
 const char* ssid = IWSSID;
 const char* passwd = IWPASSWD;
