@@ -11,13 +11,8 @@ void setup(void) {
   Serial.println("<#> Starting the Bleep v" + String(VERSION) + " Internet of Shit server !");
 
   /* Set leds and buzzer to output mode and set them to low */
-  pinMode(led0, OUTPUT);
-  pinMode(led1, OUTPUT);
   pinMode(buzzer, OUTPUT);
-
-  digitalWrite(led0, LOW);
-  digitalWrite(led1, LOW);
-  digitalWrite(buzzer, LOW);
+  digitalWrite(buzzer, HIGH);
 
   /* Connect to the WiFi hotspot specified in the configuration */
   WiFi.begin(ssid, passwd);
@@ -38,9 +33,6 @@ void setup(void) {
 }
 
 void HTTPsetup() {
-  /* Define a list of default headers to be returned */
-  // TODO, if possible
-
   /** [GET /]
    * Root page, displaying introduction and route specs for the API.
    */
@@ -64,9 +56,9 @@ void HTTPsetup() {
         "- `tone`: `int{30,12000}` — the desired tone, exprimed in **Hz**.\n"
         "- `duration`: `int{50,4000}` — the desired duration, exprimed in **ms**.\n"
         "\n"
-        "##### Examples:\n"
-        "- [200Hz, 1sec](/bleep/200:1000) — `200:1000`\n"
-        "- [800Hz, .5sec](/bleep/800:500) — `800:500`\n"
+        "##### Piano keyboard:\n"
+        "&nbsp; |[█](/bleep/277:500)|[█](/bleep/311:500)|||[█](/bleep/370:500)|[█](/bleep/415:500)|[█](/bleep/466:500)|  \n"
+        "|[C](/bleep/262:500)|[D](/bleep/294:500)|[E](/bleep/330:500)|[F](/bleep/349:500)|[G](/bleep/392:500)|[A](/bleep/440:500)|[B](/bleep/494:500)|\n"
       )
     );
   });

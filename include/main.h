@@ -15,8 +15,6 @@ using utils::Beep;
 /**
  * Pin configuration for the Bleep IoT device.
  */
-#define LED0_PIN D0
-#define LED1_PIN D4
 #define BUZZER_PIN D2
 
 #ifndef IWSSID
@@ -33,8 +31,6 @@ LinkedList<Beep*> beeps;
 const char* ssid = IWSSID;
 const char* passwd = IWPASSWD;
 
-const int led0 = LED0_PIN;
-const int led1 = LED1_PIN;
 const int buzzer = BUZZER_PIN;
 
 void HTTPsetup();

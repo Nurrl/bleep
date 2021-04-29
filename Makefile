@@ -3,7 +3,6 @@ LIBS				:= include/ $(wildcard src/*.cpp)
 ENV					:= .env
 
 BUILD_DIR			:= build/
-FS_DIR				:= data/
 
 CHIP				:= esp8266
 BOARD				:= nodemcuv2
