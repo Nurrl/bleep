@@ -61,8 +61,8 @@ void HTTPsetup() {
         "*Emit a beep or enqueue a new one (up to " + String(BEEP_QUEUE) + ") if one is currently playing.*\n"
         "\n"
         "##### Parameters:\n"
-        "- `tone`: `int{20,12000}` — the desired tone, exprimed in **Hz**.\n"
-        "- `duration`: `int{10,4000}` — the desired duration, exprimed in **ms**.\n"
+        "- `tone`: `int{30,12000}` — the desired tone, exprimed in **Hz**.\n"
+        "- `duration`: `int{50,4000}` — the desired duration, exprimed in **ms**.\n"
         "\n"
         "##### Examples:\n"
         "- [200Hz, 1sec](/bleep/200:1000) — `200:1000`\n"
@@ -74,12 +74,24 @@ void HTTPsetup() {
   /** [GET /bleep/{tone}:{duration}]
    * Produce a beep with the provided buzzer with the frequency of `tone` Hz during `duration` ms.
    */
-  server.on(UriRegex("^\\/bleep\\/([0-9]{1,4}):([0-9]{1,4})$"), HTTP_GET, []() {
+  server.on(UriRegex("^\\/bleep\\/([0-9]+):([0-9]+)$"), HTTP_GET, []() {
     server.sendHeader("Server", SERVER, true); /* Set `Server` header */
 
     /* Extract values from the path parameters */
     int hz = server.pathArg(0).toInt();
     int duration = server.pathArg(1).toInt();
+
+    /* Check for ranges of the `hz` and `duration` variables */
+    if (hz < 30 || hz > 12000) {
+      /* Return `400 Bad Request` if the tone is out of range */
+      server.send(400, "text/plain", "The provided tone is out of range !");
+      return;
+    }
+    if (duration < 50 || duration > 4000) {
+      /* Return `400 Bad Request` if the duration is out of range */
+      server.send(400, "text/plain", "The provided duration is out of range !");
+      return;
+    }
 
     /* Check if a new beep can be pushed to the Array */
     if (beeps.size() >= BEEP_QUEUE) {
