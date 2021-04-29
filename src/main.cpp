@@ -79,7 +79,7 @@ void HTTPsetup() {
 
     /* Check if a new beep can be pushed to the Array */
     if (beeps.size() >= BEEP_QUEUE) {
-      /* Return 425 too early if the queue is full */
+      /* Return `425 Too Early` if the queue is full */
       server.send(425, "text/plain", "Unfortnately the queue of beeps is full, try again later !");
       return;
     }
