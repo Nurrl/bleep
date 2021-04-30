@@ -58,10 +58,11 @@ void HTTPsetup() {
         "- [off](/playing/0) — `/playing/0`\n"
         "\n"
         "### **GET** `/beep/{tone}:{duration}`\n"
-        "*Emit a beep or enqueue a new one (up to " + String(BEEP_QUEUE) + ") if one is currently playing.*\n"
+        "*Emit a beep or enqueue a new one (up to " + String(BEEP_QUEUE) + ") if one is currently playing.*  \n"
+        "*You might want to do a pause in your notes, simply provide a `tone` of `0Hz`.*\n"
         "\n"
         "##### Parameters:\n"
-        "- `tone`: `int{30,12000}` — the desired tone, exprimed in **Hz**.\n"
+        "- `tone`: `int{0|30,12000}` — the desired tone, exprimed in **Hz**.\n"
         "- `duration`: `int{50,4000}` — the desired duration, exprimed in **ms**.\n"
         "\n"
         "##### Piano keyboard:\n"
@@ -96,7 +97,7 @@ void HTTPsetup() {
     int duration = server.pathArg(1).toInt();
 
     /* Check for ranges of the `hz` and `duration` variables */
-    if (hz < 30 || hz > 12000) {
+    if (hz != 0 && (hz < 30 || hz > 12000)) {
       /* Return `400 Bad Request` if the tone is out of range */
       server.send(400, "text/plain", "The provided tone is out of range !");
       return;

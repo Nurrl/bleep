@@ -22,13 +22,17 @@ String utils::markdown(String mk) {
 }
 
 void utils::Beep::start() {
-  tone(buzzerPin, beepTone);
+  if (beepTone > 0) {
+    tone(buzzerPin, beepTone);
+  }
 
   startTime = millis();
 }
 
 void utils::Beep::stop() {
-  noTone(buzzerPin);
+  if (beepTone > 0) {
+    noTone(buzzerPin);
+  }
 }
 
 bool utils::Beep::started() {
