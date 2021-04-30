@@ -6,13 +6,13 @@
 void setup(void) {
     /* Start serial communication at 115200 bauds */
   Serial.begin(115200);
-  Serial.println("");
+  Serial.println("\n");
 
   Serial.println("bleep  Copyright (C) 2021  Nurrl@github.com and contributors");
-  Serial.println("This program comes with ABSOLUTELY NO WARRANTY; for details")
-  Serial.println("see GPLV3+ licence file.This is free software, and you are ");
-  Serial.println("welcome to redistribute it under certain conditions; ");
-  Serial.println("\n")
+  Serial.println("This program comes with ABSOLUTELY NO WARRANTY; for details");
+  Serial.println("see GPLV3+ licence file. This is free software, and you are ");
+  Serial.println("welcome to redistribute it under certain terms;\n");
+
   Serial.println("<#> Starting the Bleep v" + String(VERSION) + " Internet of Shit server !");
 
   /* Set leds and buzzer to output mode and set them to low */
