@@ -14,11 +14,11 @@ Bleep is a Internet of Shit firmware for [ESP8266](https://en.wikipedia.org/wiki
 
 ## Installation
 
-Connect a speaker of your choosing to the *D2* pin of your board.
+Connect a speaker of your choosing to the *D2* pin of your NodeMCU board.
 
 You will need to compile the program and load it onto the board. It is assumed you know how to do this. You can find help in the [ESP8266 Arduino repository](https://github.com/esp8266/Arduino).
 
-After you have cloned the repo with `git clone https://github.com/Nurrl/bleep`, you should pull the submodules with `git submodule update --init --recursive` and `git submodule foreach git pull origin master`. This will pull a [makefile for ESP8266 and ESP32 Arduino projects.](https://github.com/plerup/makeEspArduino).
+After you have cloned the repo with `git clone --recursive https://github.com/Nurrl/bleep`. This will pull a [makefile for ESP8266 and ESP32 Arduino projects.](https://github.com/plerup/makeEspArduino).
 
 You will need to create a file named `.env` in the bleep folder, and define the `IWSSID` and `IWPASSWD` variables. They are respectively the name of your Wi-Fi network and it's password.
 
@@ -35,7 +35,6 @@ The source code folder includes a Makefile. You can type `make` and the program 
 ### Partition
 
 Partition is a super basic shell script that will take a file containing a pattern of notes, and send it to a server running this code. It's Bleep's CLI client. You can find it in the `scripts` folder.
-
 
 ## Usage
 
