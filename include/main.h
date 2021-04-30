@@ -34,5 +34,6 @@ const char* ssid = IWSSID;
 const char* passwd = IWPASSWD;
 
 const int buzzer = BUZZER_PIN;
+int delay_step = 200;
 
 void HTTPsetup();
