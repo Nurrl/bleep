@@ -27,7 +27,16 @@ void setup(void) {
   /* Loop over the Wi-Fi connection check */
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
-    delay(200);
+    delay(delay_step);
+    if (WiFi.status() == WL_NO_SSID_AVAIL){
+        Serial.println("<#> No Wi-Fi Networks are available, shutting down...");
+    } else if (WiFi.status() == WL_CONNECT_FAILED) {
+        Serial.println("<#> Connection to the Wi-Fi network failed.");
+    } else if (WiFi.status() == WL_IDLE_STATUS) {
+        /* Make the delay grow each time, with a maximum of 10 seconds between checks.
+        Check forever if no connection is found.*/
+        delay_step = (delay_step + 1 < 10000) ? delay_step + 1 : delay_step;
+    }
   }
 
   Serial.print(" Connected as ");
